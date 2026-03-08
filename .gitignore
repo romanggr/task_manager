@@ -1,0 +1,46 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+
+
+# Database volumes
+postgres_data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE / editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Node (if frontend uses Node)
+node_modules/
+dist/
+build/
+
+# Python (if backend uses Python)
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+*.egg-info/
+
+# Go (if backend uses Go)
+vendor/
+
+# Compiled binaries
+*.exe
+*.out
+*.dll
+*.so
+*.dylib

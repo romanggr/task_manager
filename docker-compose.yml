@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    networks:
+      - cloud-network
+
+  backend:
+    build: ./backend
+    ports:
+      - "8081:80"
+    networks:
+      - cloud-network
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16
+    container_name: cloud-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: StrongPassword123!
+      POSTGRES_DB: cloud_tasks
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - cloud-network
+
+networks:
+  cloud-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
