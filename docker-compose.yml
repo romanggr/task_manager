@@ -6,34 +6,33 @@ services:
     ports:
       - "8080:80"
     networks:
-      - cloud-network
+      - app-network
 
   backend:
     build: ./backend
     ports:
-      - "8081:80"
-    networks:
-      - cloud-network
-    depends_on:
-      - db
-
-  db:
-    image: postgres:16
-    container_name: cloud-db
+      - "3000:3000"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: StrongPassword123!
-      POSTGRES_DB: cloud_tasks
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      PORT: 3000
+      MONGO_URI: mongodb://mongo:27017/taskmanager
+    depends_on:
+      - mongo
     networks:
-      - cloud-network
+      - app-network
+
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
 
 networks:
-  cloud-network:
+  app-network:
     driver: bridge
 
 volumes:
-  postgres_data:
+  mongo_data:
