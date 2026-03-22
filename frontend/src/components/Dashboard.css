@@ -18,20 +18,35 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
 }
 
 .dash-title {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
   margin: 0;
+  white-space: nowrap;
 }
 
-.dash-sub {
-  font-size: 0.85rem;
-  color: #888;
-  margin: 0.2rem 0 0;
+/* Quick-add form */
+.quick-add {
+  display: flex;
+  gap: 0.5rem;
+  flex: 1;
+  max-width: 480px;
 }
+
+.quick-add__input {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 7px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  outline: none;
+}
+.quick-add__input:focus { border-color: #999; }
 
 /* Board */
 .board {

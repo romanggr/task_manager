@@ -11,15 +11,13 @@ const STATUS_LABELS: Record<TaskStatus, string> = {
 
 const STATUS_COLUMNS: TaskStatus[] = ['todo', 'in_progress', 'done'];
 
-const EMPTY_FORM: CreateTaskDto = { title: '', description: '', status: 'todo' };
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState<CreateTaskDto>(EMPTY_FORM);
+  const [newTitle, setNewTitle] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const [editTask, setEditTask] = useState<Task | null>(null);
@@ -40,14 +38,13 @@ export default function Dashboard() {
 
   useEffect(() => { fetchTasks(); }, []);
 
-  const handleCreate = async (e: React.FormEvent) => {
+  const handleQuickAdd = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.title.trim()) return;
+    if (!newTitle.trim()) return;
     try {
       setSubmitting(true);
-      await taskService.create(form);
-      setForm(EMPTY_FORM);
-      setShowForm(false);
+      await taskService.create({ title: newTitle.trim(), description: '', status: 'todo' });
+      setNewTitle('');
       await fetchTasks();
     } catch {
       setError('Failed to create task');
@@ -90,11 +87,19 @@ export default function Dashboard() {
   return (
     <div className="dashboard">
       <header className="dash-header">
-        <div>
-          <h1 className="dash-title">Task Manager</h1>
-          <p className="dash-sub">{tasks.length} task{tasks.length !== 1 ? 's' : ''} total</p>
-        </div>
-        <button className="btn-primary" onClick={() => setShowForm(true)}>+ New Task</button>
+        <h1 className="dash-title">Task Manager</h1>
+        <form className="quick-add" onSubmit={handleQuickAdd}>
+          <input
+            className="quick-add__input"
+            value={newTitle}
+            onChange={e => setNewTitle(e.target.value)}
+            placeholder="Wpisz nowe zadanie..."
+            disabled={submitting}
+          />
+          <button className="btn-primary" type="submit" disabled={submitting || !newTitle.trim()}>
+            Dodaj Zadanie
+          </button>
+        </form>
       </header>
 
       {error && <div className="error-bar">{error} <button onClick={() => setError(null)}>✕</button></div>}
@@ -129,44 +134,6 @@ export default function Dashboard() {
               </div>
             </div>
           ))}
-        </div>
-      )}
-
-      {/* Create Modal */}
-      {showForm && (
-        <div className="modal-overlay" onClick={() => setShowForm(false)}>
-          <div className="modal" onClick={e => e.stopPropagation()}>
-            <h2>New Task</h2>
-            <form onSubmit={handleCreate}>
-              <label>Title *</label>
-              <input
-                value={form.title}
-                onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-                placeholder="Task title"
-                required
-              />
-              <label>Description</label>
-              <textarea
-                value={form.description}
-                onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-                placeholder="Optional description"
-                rows={3}
-              />
-              <label>Status</label>
-              <select
-                value={form.status}
-                onChange={e => setForm(f => ({ ...f, status: e.target.value as TaskStatus }))}
-              >
-                {STATUS_COLUMNS.map(s => <option key={s} value={s}>{STATUS_LABELS[s]}</option>)}
-              </select>
-              <div className="modal-actions">
-                <button type="button" className="btn-cancel" onClick={() => setShowForm(false)}>Cancel</button>
-                <button type="submit" className="btn-primary" disabled={submitting}>
-                  {submitting ? 'Creating…' : 'Create'}
-                </button>
-              </div>
-            </form>
-          </div>
         </div>
       )}
 
