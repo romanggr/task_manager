@@ -30,3 +30,7 @@
 ## Artefakt 5
 
 ### System gotowy na chmurę
+
+## Artefakt 6
+
+### Aplikacja wdrożona w Azure
