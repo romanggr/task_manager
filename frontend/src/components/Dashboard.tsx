@@ -21,7 +21,7 @@ export default function Dashboard() {
   const [submitting, setSubmitting] = useState(false);
 
   const [editTask, setEditTask] = useState<Task | null>(null);
-  const [editForm, setEditForm] = useState<CreateTaskDto>(EMPTY_FORM);
+  const [editForm, setEditForm] = useState<CreateTaskDto>({ title: '', description: '', status: 'todo' });
 
   const fetchTasks = async () => {
     try {
