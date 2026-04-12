@@ -34,3 +34,11 @@
 ## Artefakt 6
 
 ### Aplikacja wdrożona w Azure
+
+## Artefakt 7
+
+### Manager Hasł
+
+## Artefakt 8
+
+### CI pipeline i testowanie jednostkowe
